@@ -8,6 +8,8 @@ function ItemList({ Items }) {
     const { likeItem, unlikeItem, isLiked } = useLike()
 
     const toggleLike = (item) => {
+        console.log("called");
+        
         if (isLiked(item)) {
             unlikeItem(item)
         } else {
