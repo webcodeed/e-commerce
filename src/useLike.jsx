@@ -3,20 +3,22 @@ import { useEffect, useState } from "react"
 const LOCAL_STORAGE_KEY = "liked_items"
 
 function useLike() {
-    const [likedItems, setLikedItems] = useState([])
+    const [likedItems, setLikedItems] = useState(null)
 
     // Load from localStorage on mount
     useEffect(() => {
         const storedLikes =
             JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || []
+        console.log(storedLikes)
         setLikedItems(storedLikes)
     }, [])
-    
+
     // save to localStorage when likedItems changes
     useEffect(() => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(likedItems))
-        console.log(likedItems);
-        
+        if (likedItems) {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(likedItems))
+            console.log(likedItems);
+        }
     }, [likedItems])
 
     // Add an item
@@ -34,6 +36,9 @@ function useLike() {
 
     // Check if Liked
     const isLiked = (item) => {
+        if (!likedItems) {
+            return false
+        }
         return likedItems.some((iflike) => iflike.id === item.id)
     }
 
